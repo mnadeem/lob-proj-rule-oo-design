@@ -6,7 +6,8 @@
 	<!-- Default cache template -->
 	<cache-template name="default">
 		<expiry>
-			<ttl unit="hours">1</ttl>			
+			<tti unit="hours">4</tti>
+			<!-- <ttl unit="minutes">2</ttl> -->
 		</expiry>
 		<listeners>
 			<listener>
