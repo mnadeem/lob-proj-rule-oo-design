@@ -10,7 +10,9 @@ import org.springframework.core.io.ClassPathResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
+// https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
+//https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
+// http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
 public class DefaultParser {
 
 	private XPath xPath;
@@ -48,24 +50,15 @@ public class DefaultParser {
 	public static void main(String[] args) throws Exception {
 		DefaultParser parser = new DefaultParser("employees.xml");
 		//Get first match
-		System.out.println(parser.string("/employees/employee/firstName"));
+		//System.out.println(parser.string("/employees/employee/firstName"));
 
 		//Get all matches
 		NodeList nodes = (NodeList) parser.xPath.compile("/employees/employee/@id").evaluate(parser.xmlDocument, XPathConstants.NODESET);
 		for (int i = 0; i < nodes.getLength(); i++) {
-			System.out.println(nodes.item(i).getNodeValue());
+			//System.out.println(nodes.item(i).getNodeValue());
 		}
-
-		/*
-		 * NodeList nodes1 = (NodeList)
-		 * parser.xPath.compile("/employees/employee").evaluate(parser.xmlDocument,
-		 * XPathConstants.NODESET); for (int i = 0; i < nodes1.getLength(); i++) {
-		 * System.out.println(nodes1.item(i).getNodeValue()); }
-		 * 
-		 * NodeList result = (NodeList)
-		 * parser.xPath.compile("/firstName/text()").evaluate(nodes1,
-		 * XPathConstants.NODESET); for (int i = 0; i < result.getLength(); i++) {
-		 * System.out.println(result.item(i).getNodeValue()); }
-		 */
+		
+		System.out.println(parser.string("/employees/employee/@id[. > 2]"));
+		
 	}
 }
