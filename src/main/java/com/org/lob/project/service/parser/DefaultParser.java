@@ -1,6 +1,12 @@
 package com.org.lob.project.service.parser;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.StringReader;
+import java.io.UncheckedIOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,10 +16,15 @@ import javax.xml.xpath.XPathFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import com.org.lob.project.service.parser.expression.Expressions;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
 // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
@@ -61,10 +72,15 @@ public class DefaultParser {
 		return (Node) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODE);
 	}
 
+	public String evaluate(Expressions expressions) {
+		
+		return null;
+	}
+
 	public static void main(String[] args) throws Exception {
-		DefaultParser parser = new DefaultParser("employees.xml");
+		DefaultParser parser = new DefaultParser(asString(new FileSystemResource("./src/main/resources/employees.xml")));
 		//Get first match
-		//System.out.println(parser.string("/employees/employee/firstName"));
+		System.out.println(parser.string("/employees/employee/firstName"));
 
 		//Get all matches
 		NodeList nodes = (NodeList) parser.xPath.compile("/employees/employee[@id='1' or @id ='2']").evaluate(parser.xmlDocument, XPathConstants.NODESET);
@@ -77,4 +93,13 @@ public class DefaultParser {
 			System.out.println("id: " + id);
 		}		
 	}
+
+	public static String asString(Resource resource) {
+        try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
+            return FileCopyUtils.copyToString(reader);
+        } catch (IOException e) {
+        	LOGGER.error("Error Proessing ", e);
+            throw new UncheckedIOException(e);
+        }
+    }
 }

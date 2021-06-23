@@ -7,6 +7,7 @@
             <id>101</id>
             <name>IT</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="2">
         <firstName>Brian</firstName>
@@ -15,6 +16,7 @@
             <id>102</id>
             <name>HR</name>
         </department>
+        <contractor>TRUE</contractor>
     </employee>
     <employee id="3">
         <firstName>Alex</firstName>
@@ -23,6 +25,7 @@
             <id>103</id>
             <name>FINANCE</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="4">
         <firstName>Amit</firstName>
@@ -31,6 +34,7 @@
             <id>104</id>
             <name>HR</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="5">
         <firstName>David</firstName>
@@ -39,6 +43,7 @@
             <id>105</id>
             <name>DEVOPS</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="6">
         <firstName>Virat</firstName>
@@ -47,6 +52,7 @@
             <id>106</id>
             <name>DEVOPS</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="7">
         <firstName>John</firstName>
@@ -55,6 +61,7 @@
             <id>107</id>
             <name>IT</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="8">
         <firstName>Mike</firstName>
@@ -63,6 +70,7 @@
             <id>108</id>
             <name>HR</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="9">
         <firstName>Bob</firstName>
@@ -71,6 +79,7 @@
             <id>109</id>
             <name>FINANCE</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
     <employee id="10">
         <firstName>Gary</firstName>
@@ -79,5 +88,6 @@
             <id>110</id>
             <name>IT</name>
         </department>
+        <contractor>FALSE</contractor>
     </employee>
 </employees>

@@ -29,7 +29,7 @@ public class DefaultRuleService implements RuleService {
 		return asString(new FileSystemResource(project));
 	}
 
-	public static String asString(Resource resource) {
+	private String asString(Resource resource) {
         try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
             return FileCopyUtils.copyToString(reader);
         } catch (IOException e) {
