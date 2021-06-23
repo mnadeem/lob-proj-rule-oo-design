@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
-//https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
+// https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
 public class DefaultParser {
 
@@ -53,12 +53,14 @@ public class DefaultParser {
 		//System.out.println(parser.string("/employees/employee/firstName"));
 
 		//Get all matches
-		NodeList nodes = (NodeList) parser.xPath.compile("/employees/employee/@id").evaluate(parser.xmlDocument, XPathConstants.NODESET);
+		NodeList nodes = (NodeList) parser.xPath.compile("/employees/employee[@id='1' or @id ='2']").evaluate(parser.xmlDocument, XPathConstants.NODESET);
+		System.out.println("Count employee: " + nodes.getLength());
+
 		for (int i = 0; i < nodes.getLength(); i++) {
-			//System.out.println(nodes.item(i).getNodeValue());
-		}
-		
-		System.out.println(parser.string("/employees/employee/@id[. > 2]"));
-		
+			Node node = nodes.item(i);
+
+			String id = parser.xPath.compile("./department[name='IT']/id").evaluate(node);
+			System.out.println("id: " + id);
+		}		
 	}
 }
