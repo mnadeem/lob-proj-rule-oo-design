@@ -1,30 +1,44 @@
 package com.org.lob.project.service.parser;
 
+import java.io.StringReader;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.springframework.core.io.ClassPathResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
 // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
 public class DefaultParser {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultParser.class);
+
 	private XPath xPath;
 	private Document xmlDocument;
 
-	public DefaultParser(String file) throws Exception {
+	public DefaultParser(String xml) {
 
-		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = builderFactory.newDocumentBuilder();
+		InputSource source = new InputSource(new StringReader(xml));
 
-		this.xmlDocument = builder.parse(new ClassPathResource(file).getInputStream());
-		this.xPath = XPathFactory.newInstance().newXPath();
+		try {
+			
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = builderFactory.newDocumentBuilder();
+			this.xmlDocument = builder.parse(source);
+			this.xPath = XPathFactory.newInstance().newXPath();
+
+		} catch (Exception e) {
+			LOGGER.error("Error parsing xml ", e);
+			throw new IllegalStateException(e);
+		}
 	}
 
 	public NodeList nodes(String expression) throws Exception {

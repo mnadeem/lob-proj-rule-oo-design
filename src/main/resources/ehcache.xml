@@ -39,4 +39,9 @@
 		<value-type>com.org.lob.project.repository.entity.Book</value-type>		
 	</cache>
 
+	<cache alias="rules" uses-template="default" >
+		<key-type>java.lang.String</key-type>
+		<value-type>java.lang.String</value-type>		
+	</cache>
+
 </config>
