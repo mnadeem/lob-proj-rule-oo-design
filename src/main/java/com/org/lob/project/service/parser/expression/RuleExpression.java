@@ -42,24 +42,6 @@ public class RuleExpression {
 		}
 	}
 
-	public String getFullPath() {
-		StringBuilder builder = new StringBuilder();
-
-		if (StringUtils.hasText(path)) {
-			builder.append(path);
-		}
-
-		if (StringUtils.hasText(subPath)) {
-			builder.append(subPath);
-		}
-
-		if (StringUtils.hasText(tag)) {
-			builder.append(tag);
-		}
-
-		return builder.toString();
-	}
-
 	public String getFullSubPath() {
 		StringBuilder builder = new StringBuilder();
 
