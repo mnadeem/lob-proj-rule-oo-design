@@ -1,22 +1,77 @@
 package com.org.lob.project.service.parser.expression;
 
+import java.util.stream.Stream;
+
+import org.springframework.util.StringUtils;
+
 public class RuleExpression {
 
 	private String path;
 	private String subPath;
 	private String tag;
+
 	private Operator operator;
+
 	private String value;
+
 	private ReturnType returnType;
 
 	public RuleExpression(String path, String subPath, String tag, Operator operator, String value, ReturnType returnType) {
-
 		this.path = path;
 		this.subPath = subPath;
 		this.tag = tag;
 		this.operator = operator;
 		this.value = value;
 		this.returnType = returnType;
+	}
+
+	public boolean valueMatches(String val) {
+		if (operator.isEqual()) {
+			return val != null && value.equalsIgnoreCase(val);
+		} else if (operator.isNotEqual()) {
+			return !value.equalsIgnoreCase(val);
+		} else if (operator.isList()) {
+			String[] tokenized = StringUtils.tokenizeToStringArray(value, "|");
+			return Stream.of(tokenized).anyMatch(x -> x.equalsIgnoreCase(val));
+		} else if (operator.isNotNull()) {
+			return value != null;
+		} else if (operator.isNull()) {
+			return value == null;
+		} else {		
+			return false;
+		}
+	}
+
+	public String getFullPath() {
+		StringBuilder builder = new StringBuilder();
+
+		if (StringUtils.hasText(path)) {
+			builder.append(path);
+		}
+
+		if (StringUtils.hasText(subPath)) {
+			builder.append(subPath);
+		}
+
+		if (StringUtils.hasText(tag)) {
+			builder.append(tag);
+		}
+
+		return builder.toString();
+	}
+
+	public String getFullSubPath() {
+		StringBuilder builder = new StringBuilder();
+
+		if (StringUtils.hasText(subPath)) {
+			builder.append(subPath);
+		}
+
+		if (StringUtils.hasText(tag)) {
+			builder.append(tag);
+		}
+
+		return builder.toString();
 	}
 
 	public String getPath() {
