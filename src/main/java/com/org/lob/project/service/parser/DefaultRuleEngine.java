@@ -28,19 +28,19 @@ import com.org.lob.project.service.parser.expression.Expressions;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
 // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
-public class DefaultParser {
+public class DefaultRuleEngine {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultParser.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRuleEngine.class);
 
 	private XPath xPath;
 	private Document xmlDocument;
 
-	public DefaultParser(String xml) {
+	public DefaultRuleEngine(String xml) {
 
 		InputSource source = new InputSource(new StringReader(xml));
 
 		try {
-			
+
 			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder builder = builderFactory.newDocumentBuilder();
 			this.xmlDocument = builder.parse(source);
@@ -73,12 +73,12 @@ public class DefaultParser {
 	}
 
 	public String evaluate(Expressions expressions) {
-		
+
 		return null;
 	}
 
 	public static void main(String[] args) throws Exception {
-		DefaultParser parser = new DefaultParser(asString(new FileSystemResource("./src/main/resources/employees.xml")));
+		DefaultRuleEngine parser = new DefaultRuleEngine(asString(new FileSystemResource("./src/main/resources/employees.xml")));
 		//Get first match
 		System.out.println(parser.string("/employees/employee/firstName"));
 

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.lang.NonNull;
+import org.springframework.util.CollectionUtils;
 
 public class Expressions {
 
@@ -22,6 +23,42 @@ public class Expressions {
 		this.returnType = returnType;
 	}
 
+	public String getMainPath() {
+		return this.main.getPath();
+	}
+
+	public boolean isOnlyMain() {
+		return main != null && CollectionUtils.isEmpty(ors) && CollectionUtils.isEmpty(ands);
+	}
+
+	public boolean isOrsPresent() {
+		return !CollectionUtils.isEmpty(ors);
+	}
+
+	public boolean isAndsPresent() {
+		return !CollectionUtils.isEmpty(ands);
+	}
+
+	public boolean isBothPresent() {
+		return isOrsPresent() && isAndsPresent();
+	}
+
+	public boolean isXmlValueReturnType() {
+		return ReturnType.XML_VAL == getReturnType();
+	}
+
+	public boolean isTrueReturnType() {
+		return ReturnType.TRUE == getReturnType();
+	}
+
+	public boolean isFalseReturnType() {
+		return ReturnType.FALSE == getReturnType();
+	}
+
+	public boolean isBoolReturnType() {
+		return isTrueReturnType() || isFalseReturnType();
+	}
+
 	public RuleExpression getMain() {
 		return main;
 	}
@@ -34,7 +71,7 @@ public class Expressions {
 		return ands;
 	}
 
-	public ReturnType getReturnType() {
+	private ReturnType getReturnType() {
 		return returnType;
 	}
 
@@ -52,12 +89,16 @@ public class Expressions {
 		private ReturnType returnType;
 
 		public Builder(RuleExpression main) {
+			notNull(main, "main should not be null");
 			this.main = main;
+
+			if (main.getReturnType() != null && this.returnType == null) {
+				this.returnType = main.getReturnType();
+			}
 		}
 
 		@Override
-		public And and(@NonNull RuleExpression andExpression) {
-			notNull(andExpression, "andExpression should not be null");
+		public And and(RuleExpression andExpression) {
 			this.ands.add(andExpression);
 
 			if (andExpression.getReturnType() != null && this.returnType == null) {
@@ -67,8 +108,7 @@ public class Expressions {
 		}
 
 		@Override
-		public Or or(@NonNull RuleExpression orExpression) {
-			notNull(orExpression, "orExpression should not be null");
+		public Or or(RuleExpression orExpression) {
 			this.ors.add(orExpression);
 			if (orExpression.getReturnType() != null && this.returnType == null) {
 				this.returnType = orExpression.getReturnType();
@@ -85,11 +125,12 @@ public class Expressions {
 	public interface And {
 		And and(RuleExpression andExpression);
 		Or or(RuleExpression orExpression);
+		Expressions build();
 	}
 
 	public interface Or {
 		Or or(RuleExpression orExpression);
-		Expressions build();		
+		Expressions build();
 	}
 
 	@Override
