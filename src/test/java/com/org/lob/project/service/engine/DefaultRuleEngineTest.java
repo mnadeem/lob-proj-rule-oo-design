@@ -33,7 +33,144 @@ class DefaultRuleEngineTest {
 	public static void doBeforeAll() {
 		targetBeingTested = new DefaultRuleEngine(asString(new FileSystemResource("./src/main/resources/employees.xml")));
 	}
+	
+	
+	@Test
+	void andExpressions() throws Exception {
 
+		String exp = Expressions
+						.builder(RuleExpression
+								.builder()
+								.path("/employees/employee")
+								//.subPath(null)
+								.tag("firstName")
+								.operatorBuild("Is Not Null")
+								.build()
+							)
+						.and(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("101")
+								.build()
+							)
+					.build()
+				.buildEvaluationExpression();
+		
+		LOGGER.info(" Exp : {} ", exp);
+
+		NodeList nodes = targetBeingTested.nodes(exp);
+		
+		assertEquals(1, nodes.getLength());
+		Node node = nodes.item(0);
+
+		String id = targetBeingTested.string("./@id", node);
+		assertEquals("1", id);
+	}
+	
+	@Test
+	void orExpressions() throws Exception {
+
+		String exp = Expressions
+						.builder(RuleExpression
+								.builder()
+								.path("/employees/employee")
+								//.subPath(null)
+								.tag("firstName")
+								.operator(Operator.EQUAL)
+								.value("Lokesh")
+								.build()
+							)
+						.or(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("101")
+								.build()
+							)
+						.or(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("102")
+								.build()
+							)
+					.build()
+				.buildEvaluationExpression();
+		
+		LOGGER.info(" Exp : {} ", exp);
+
+		NodeList nodes = targetBeingTested.nodes(exp);
+
+		assertEquals(1, nodes.getLength());
+		Node node = nodes.item(0);
+
+		String id = targetBeingTested.string("./@id", node);
+		assertEquals("1", id);
+	}
+	
+	@Test
+	void andOrExpressions() throws Exception {
+
+		String exp = Expressions
+						.builder(RuleExpression
+								.builder()
+								.path("/employees/employee")
+								//.subPath(null)
+								.tag("firstName")
+								.operator(Operator.EQUAL)
+								.value("Lokesh")
+								.build()
+							)
+						.and(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("lastName")
+								.operator(Operator.EQUAL)
+								.value("Gupta")
+								.build()
+							)
+						.and(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("contractor")
+								.operator(Operator.EQUAL)
+								.value("FALSE")
+								.build()
+							)
+						.or(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("101")
+								.build()
+							)
+						.or(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("102")
+								.build()
+							)
+					.build()
+				.buildEvaluationExpression();
+		
+		LOGGER.info(" Exp : {} ", exp);
+
+		NodeList nodes = targetBeingTested.nodes(exp);
+
+		assertEquals(1, nodes.getLength());
+		Node node = nodes.item(0);
+
+		String id = targetBeingTested.string("./@id", node);
+		assertEquals("1", id);
+	}
+	
 	@Test
 	void mainExpressionIsNull() throws Exception {
 

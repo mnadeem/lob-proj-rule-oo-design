@@ -116,6 +116,10 @@ public class RuleExpression {
 	public static Path builder() {
         return new Builder();
     }
+	
+	public static SubPath subPathBuilder() {
+        return new Builder();
+    }
 
 	public static class Builder implements Path, SubPath, Tag, OperatorStr, Val, Build {
 

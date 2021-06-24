@@ -47,8 +47,7 @@ public class Expressions {
 
 			builder.append(ands.stream().map(and -> and.getSubExpression()).collect(Collectors.joining(" and ")));
 
-			builder.append(SEPERATOR_SPACE)
-			        .append(PARAN_END);
+			builder.append(PARAN_END);
 		}
 
 		if (isOrsPresent()) {
@@ -59,8 +58,7 @@ public class Expressions {
 
 			builder.append(ors.stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
 
-			builder.append(SEPERATOR_SPACE)
-	        		.append(PARAN_END);
+			builder.append(PARAN_END);
 		}
 
 		builder.append(BRACKET_END);
@@ -143,13 +141,17 @@ public class Expressions {
 
 		@Override
 		public And and(RuleExpression andExpression) {
-			this.ands.add(andExpression);
+			if (andExpression != null) {				
+				this.ands.add(andExpression);
+			}
 			return this;
 		}
 
 		@Override
 		public Or or(RuleExpression orExpression) {
-			this.ors.add(orExpression);
+			if (orExpression != null) {				
+				this.ors.add(orExpression);
+			}
 			return this;
 		}
 
