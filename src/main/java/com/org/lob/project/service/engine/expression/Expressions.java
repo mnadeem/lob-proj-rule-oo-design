@@ -11,7 +11,6 @@ import org.springframework.util.CollectionUtils;
 
 public class Expressions {
 
-	private static final String CONJUCTION_OR = "or";
 	private static final String CONJUCTION_AND = "and";
 
 	private static final char PARAN_END = ')';
@@ -32,7 +31,7 @@ public class Expressions {
 		this.returnExpression = returnExpression;
 	}
 
-	public String buildExpression() {
+	public String buildEvaluationExpression() {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(getMainPath())
@@ -46,8 +45,8 @@ public class Expressions {
 					.append(SEPERATOR_SPACE)
 					.append(PARAN_START);
 
-			builder.append(ands.stream().map(and -> and.getSubExpression()).collect(Collectors.joining(CONJUCTION_AND)));
-			
+			builder.append(ands.stream().map(and -> and.getSubExpression()).collect(Collectors.joining(" and ")));
+
 			builder.append(SEPERATOR_SPACE)
 			        .append(PARAN_END);
 		}
@@ -58,7 +57,7 @@ public class Expressions {
 					.append(SEPERATOR_SPACE)
 					.append(PARAN_START);
 
-			builder.append(ors.stream().map(or -> or.getSubExpression()).collect(Collectors.joining(CONJUCTION_OR)));
+			builder.append(ors.stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
 
 			builder.append(SEPERATOR_SPACE)
 	        		.append(PARAN_END);
@@ -69,7 +68,7 @@ public class Expressions {
 		return builder.toString();
 	}
 
-	public String getReturnExpression() {
+	public String buildReturnExpression() {
 		if (isXmlValueReturnType()) {
 			return returnExpression.getExpression(getMainPath());
 		}

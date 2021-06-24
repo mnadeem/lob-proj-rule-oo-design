@@ -44,7 +44,7 @@ class DefaultRuleEngineTest {
 						.operatorBuild("Is Null")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 		
 		LOGGER.info(" Exp : {} ", exp);
 		
@@ -67,7 +67,7 @@ class DefaultRuleEngineTest {
 						.operatorBuild("Is Not Null")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 		
 		LOGGER.info(" Exp : {} ", exp);
 		
@@ -93,7 +93,7 @@ class DefaultRuleEngineTest {
 						.value("Lokesh1")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 
 		Node node = targetBeingTested.node(exp);
 		LOGGER.info(" Exp : {} , result : {}", exp, node);
@@ -111,7 +111,7 @@ class DefaultRuleEngineTest {
 						.value("Lokesh")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 		
 		LOGGER.info(" Exp : {} ", exp);
 
@@ -133,7 +133,7 @@ class DefaultRuleEngineTest {
 						.value("Brian")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 
@@ -160,7 +160,7 @@ class DefaultRuleEngineTest {
 						.value("Lokesh|Brian")
 						.build())
 					.build()
-				.buildExpression();
+				.buildEvaluationExpression();
 
 		LOGGER.info(" Exp : {}", exp);
 
