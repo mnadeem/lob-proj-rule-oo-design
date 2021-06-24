@@ -11,8 +11,8 @@ import org.springframework.util.CollectionUtils;
 public class Expressions {
 
 	private final RuleExpression main;
-	private final List<RuleExpression> ors;
 	private final List<RuleExpression> ands;
+	private final List<RuleExpression> ors;
 	private final ReturnExpression returnExpression;
 
 	private Expressions(RuleExpression main, List<RuleExpression> ors, List<RuleExpression> ands, ReturnExpression returnExpression) {

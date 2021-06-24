@@ -35,7 +35,7 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
-	void expressionIsNull() throws Exception {
+	void mainExpressionIsNull() throws Exception {
 
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -58,7 +58,7 @@ class DefaultRuleEngineTest {
 	}
 	
 	@Test
-	void expressionIsNotNull() throws Exception {
+	void mainExpressionIsNotNull() throws Exception {
 
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -83,7 +83,7 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
-	void expressionEqualsNull() throws Exception {
+	void mainExpressionEqualsNull() throws Exception {
 
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -101,7 +101,7 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
-	void expressionEqualsNonNull() throws Exception {
+	void mainExpressionEqualsNonNull() throws Exception {
 		
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -123,7 +123,7 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
-	void expressionNotEqualsNonNull() throws Exception {
+	void mainExpressionNotEqualsNonNull() throws Exception {
 
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -150,7 +150,7 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
-	void expressionListNonNull() throws Exception {
+	void mainExpressionListNonNull() throws Exception {
 
 		String exp = Expressions.builder(RuleExpression.builder()
 						.path("/employees/employee")
@@ -182,29 +182,6 @@ class DefaultRuleEngineTest {
 			String id = targetBeingTested.string("./department[name='IT' or name='HR']/id", node);
 			assertNotNull(id);
 		}
-	}
-	
-	@Test
-	void elementExists() throws Exception {
-		NodeList nodes = targetBeingTested.nodes("/employees/employee[contractor]");
-		
-		assertEquals(9, nodes.getLength());
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Node node = nodes.item(i);
-
-			String id = targetBeingTested.string("./id", node);
-			assertNotNull(id);
-		}
-	}
-	
-	@Test
-	void elementDoesNotExists() throws Exception {
-		NodeList nodes = targetBeingTested.nodes("/employees/employee[not(contractor)]");
-		assertEquals(1, nodes.getLength());
-		Node node = nodes.item(0);
-
-		String id = targetBeingTested.string("./@id", node);
-		assertEquals("5", id);	
 	}
 
 	@Test
