@@ -10,8 +10,6 @@ public class RuleExpression {
 	private static final char PARENTHESES_END = ')';
 	private static final char PARENTHESES_START = '(';
 	private static final char EQUAL = '=';
-	private static final char BRACKET_END = ']';
-	private static final char BRACKET_START = '[';
 
 	private static final String QUOTE_START = "'";
 	private static final String QUOTE_END = QUOTE_START;
@@ -59,51 +57,40 @@ public class RuleExpression {
 
 	private void appendElementDoesNotExists(StringBuilder builder) {
 
-		builder.append(BRACKET_START)
-				.append("not")
+		builder.append("not")
 				.append(PARENTHESES_START)
 				.append(tag)
-				.append(PARENTHESES_END)
-				.append(BRACKET_END);
+				.append(PARENTHESES_END);
 	}
 
 	private void appendElementExists(StringBuilder builder) {
-
-		builder.append(BRACKET_START)
-				.append(tag)
-				.append(BRACKET_END);		
+		builder.append(tag);
 	}
 
 	private void appendListExpression(StringBuilder builder) {
-		builder.append(BRACKET_START);
 
 		String[] tokenized = StringUtils.tokenizeToStringArray(value, SEPERATOR_PIPE);
 		String result = Stream.of(tokenized).map(x -> tag + EQUAL + QUOTE_START + x + QUOTE_END).collect(Collectors.joining(" or "));
 		builder.append(result);
-		builder.append(BRACKET_END);
 	}
 
 	private void appendNotEqualsExpression(StringBuilder builder) {
-		builder.append(BRACKET_START)
-				.append("not")
+		builder.append("not")
 				.append(PARENTHESES_START)
 				.append(tag)
 				.append(EQUAL)
 				.append(QUOTE_START)
 				.append(value)
 				.append(QUOTE_END)
-				.append(PARENTHESES_END)
-				.append(BRACKET_END);
+				.append(PARENTHESES_END);
 	}
 
 	private void appendEqualsExpression(StringBuilder builder) {
-		builder.append(BRACKET_START)
-				.append(tag)
+		builder.append(tag)
 				.append(EQUAL)
 				.append(QUOTE_START)
 				.append(value)
-				.append(QUOTE_END)
-				.append(BRACKET_END);
+				.append(QUOTE_END);
 	}
 
 	public String getPath() {

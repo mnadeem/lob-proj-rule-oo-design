@@ -9,7 +9,10 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
 public class Expressions {
-
+	
+	private static final char BRACKET_END = ']';
+	private static final char BRACKET_START = '[';
+	
 	private final RuleExpression main;
 	private final List<RuleExpression> ands;
 	private final List<RuleExpression> ors;
@@ -24,7 +27,12 @@ public class Expressions {
 
 	public String buildExpression() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(getMainPath()).append(main.getSubExpression());
+
+		builder.append(getMainPath())
+			    .append(BRACKET_START)
+				.append(main.getSubExpression())
+				.append(BRACKET_END);
+
 		return builder.toString();
 	}
 
