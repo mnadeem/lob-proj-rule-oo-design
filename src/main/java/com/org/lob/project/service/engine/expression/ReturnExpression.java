@@ -1,5 +1,7 @@
 package com.org.lob.project.service.engine.expression;
 
+import org.springframework.util.StringUtils;
+
 public class ReturnExpression {
 
 	private final String subPath;
@@ -10,6 +12,17 @@ public class ReturnExpression {
 		this.subPath = subPath;
 		this.tag = tag;
 		this.returnType = returnType;
+	}
+
+	public String getExpression(String path) {
+		StringBuilder builder = new StringBuilder(path);
+
+		if (StringUtils.hasText(subPath)) {
+			builder.append(subPath);
+		}
+		builder.append(tag);
+
+		return builder.toString();
 	}
 
 	public static SubPath builder() {

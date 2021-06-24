@@ -12,7 +12,7 @@ public class Expressions {
 	
 	private static final char BRACKET_END = ']';
 	private static final char BRACKET_START = '[';
-	
+
 	private final RuleExpression main;
 	private final List<RuleExpression> ands;
 	private final List<RuleExpression> ors;
@@ -29,11 +29,44 @@ public class Expressions {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(getMainPath())
-			    .append(BRACKET_START)
-				.append(main.getSubExpression())
-				.append(BRACKET_END);
+			    .append(BRACKET_START);
+
+		builder.append(main.getSubExpression());
+
+		if (isAndsPresent()) {
+			builder.append(" ")
+					.append("and")
+					.append(" ")
+					.append("(");
+			for (RuleExpression ruleExpression : ands) {
+				builder.append(ruleExpression.getSubExpression());
+			}
+			builder.append(" ")
+			        .append(")");
+		}
+
+		if (isOrsPresent()) {
+			builder.append(" ")
+					.append("and")
+					.append(" ")
+					.append("(");
+			for (RuleExpression ruleExpression : ors) {
+				builder.append(ruleExpression.getSubExpression());
+			}
+			builder.append(" ")
+	        		.append(")");
+		}
+
+		builder.append(BRACKET_END);
 
 		return builder.toString();
+	}
+
+	public String getReturnExpression() {
+		if (isXmlValueReturnType()) {
+			return returnExpression.getExpression(getMainPath());
+		}
+		return null;
 	}
 
 	public String getMainPath() {

@@ -179,7 +179,8 @@ class DefaultRuleEngineTest {
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
 
-			String id = targetBeingTested.string("./department[name='IT' or name='HR']/id", node);
+			String id = targetBeingTested.string("./department[name='IT' or  name='HR']/id/text()", node);
+			LOGGER.info(" id : {}", id);
 			assertNotNull(id);
 		}
 	}
