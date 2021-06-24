@@ -4,12 +4,19 @@ import static org.springframework.util.Assert.notNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
 public class Expressions {
-	
+
+	private static final String CONJUCTION_OR = "or";
+	private static final String CONJUCTION_AND = "and";
+
+	private static final char PARAN_END = ')';
+	private static final char PARAN_START = '(';
+	private static final char SEPERATOR_SPACE = ' ';
 	private static final char BRACKET_END = ']';
 	private static final char BRACKET_START = '[';
 
@@ -34,27 +41,27 @@ public class Expressions {
 		builder.append(main.getSubExpression());
 
 		if (isAndsPresent()) {
-			builder.append(" ")
-					.append("and")
-					.append(" ")
-					.append("(");
-			for (RuleExpression ruleExpression : ands) {
-				builder.append(ruleExpression.getSubExpression());
-			}
-			builder.append(" ")
-			        .append(")");
+			builder.append(SEPERATOR_SPACE)
+					.append(CONJUCTION_AND)
+					.append(SEPERATOR_SPACE)
+					.append(PARAN_START);
+
+			builder.append(ands.stream().map(and -> and.getSubExpression()).collect(Collectors.joining(CONJUCTION_AND)));
+			
+			builder.append(SEPERATOR_SPACE)
+			        .append(PARAN_END);
 		}
 
 		if (isOrsPresent()) {
-			builder.append(" ")
-					.append("and")
-					.append(" ")
-					.append("(");
-			for (RuleExpression ruleExpression : ors) {
-				builder.append(ruleExpression.getSubExpression());
-			}
-			builder.append(" ")
-	        		.append(")");
+			builder.append(SEPERATOR_SPACE)
+					.append(CONJUCTION_AND)
+					.append(SEPERATOR_SPACE)
+					.append(PARAN_START);
+
+			builder.append(ors.stream().map(or -> or.getSubExpression()).collect(Collectors.joining(CONJUCTION_OR)));
+
+			builder.append(SEPERATOR_SPACE)
+	        		.append(PARAN_END);
 		}
 
 		builder.append(BRACKET_END);
