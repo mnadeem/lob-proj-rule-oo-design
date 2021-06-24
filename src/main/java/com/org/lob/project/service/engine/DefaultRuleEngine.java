@@ -1,12 +1,6 @@
-package com.org.lob.project.service.parser;
+package com.org.lob.project.service.engine;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.io.StringReader;
-import java.io.UncheckedIOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,18 +10,19 @@ import javax.xml.xpath.XPathFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.org.lob.project.service.parser.expression.Expressions;
+import com.org.lob.project.service.engine.expression.Expressions;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
 // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
+// https://www.baeldung.com/java-xpath
+// https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)?redirectedfrom=MSDN
+// https://stackoverflow.com/questions/3418470/using-not-in-xpath/3418510
+// https://stackoverflow.com/questions/15909348/how-to-tell-using-xpath-if-an-element-is-present-and-non-empty
 public class DefaultRuleEngine {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRuleEngine.class);
@@ -60,6 +55,10 @@ public class DefaultRuleEngine {
 		return (String) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.STRING);
 	}
 
+	public String string(String expression, Node node) throws Exception {
+		return xPath.compile(expression).evaluate(node);
+	}
+
 	public Boolean bool(String expression) throws Exception {
 		return (Boolean) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.BOOLEAN);
 	}
@@ -76,30 +75,4 @@ public class DefaultRuleEngine {
 
 		return null;
 	}
-
-	public static void main(String[] args) throws Exception {
-		DefaultRuleEngine parser = new DefaultRuleEngine(asString(new FileSystemResource("./src/main/resources/employees.xml")));
-		//Get first match
-		System.out.println(parser.string("/employees/employee/firstName"));
-
-		//Get all matches
-		NodeList nodes = (NodeList) parser.xPath.compile("/employees/employee[@id='1' or @id ='2']").evaluate(parser.xmlDocument, XPathConstants.NODESET);
-		System.out.println("Count employee: " + nodes.getLength());
-
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Node node = nodes.item(i);
-
-			String id = parser.xPath.compile("./department[name='IT']/id").evaluate(node);
-			System.out.println("id: " + id);
-		}		
-	}
-
-	public static String asString(Resource resource) {
-        try (Reader reader = new InputStreamReader(resource.getInputStream(), UTF_8)) {
-            return FileCopyUtils.copyToString(reader);
-        } catch (IOException e) {
-        	LOGGER.error("Error Proessing ", e);
-            throw new UncheckedIOException(e);
-        }
-    }
 }

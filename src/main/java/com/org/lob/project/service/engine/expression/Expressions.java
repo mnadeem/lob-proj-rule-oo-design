@@ -1,4 +1,4 @@
-package com.org.lob.project.service.parser.expression;
+package com.org.lob.project.service.engine.expression;
 
 import static org.springframework.util.Assert.notNull;
 
@@ -10,17 +10,22 @@ import org.springframework.util.CollectionUtils;
 
 public class Expressions {
 
-	private RuleExpression main;
-	private List<RuleExpression> ors;
-	private List<RuleExpression> ands;
+	private final RuleExpression main;
+	private final List<RuleExpression> ors;
+	private final List<RuleExpression> ands;
+	private final ReturnExpression returnExpression;
 
-	private ReturnType returnType;
-
-	private Expressions(RuleExpression main, List<RuleExpression> ors, List<RuleExpression> ands, ReturnType returnType) {
+	private Expressions(RuleExpression main, List<RuleExpression> ors, List<RuleExpression> ands, ReturnExpression returnExpression) {
 		this.main = main;
 		this.ors = ors;
 		this.ands = ands;
-		this.returnType = returnType;
+		this.returnExpression = returnExpression;
+	}
+
+	public String buildExpression() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(getMainPath()).append(main.getSubExpression());
+		return builder.toString();
 	}
 
 	public String getMainPath() {
@@ -44,15 +49,15 @@ public class Expressions {
 	}
 
 	public boolean isXmlValueReturnType() {
-		return ReturnType.XML_VAL == getReturnType();
+		return returnExpression != null && ReturnType.XML_VAL == returnExpression.getReturnType();
 	}
 
 	public boolean isTrueReturnType() {
-		return ReturnType.TRUE == getReturnType();
+		return returnExpression != null && ReturnType.TRUE == returnExpression.getReturnType();
 	}
 
 	public boolean isFalseReturnType() {
-		return ReturnType.FALSE == getReturnType();
+		return returnExpression != null && ReturnType.FALSE == returnExpression.getReturnType();
 	}
 
 	public boolean isBoolReturnType() {
@@ -71,70 +76,71 @@ public class Expressions {
 		return ands;
 	}
 
-	private ReturnType getReturnType() {
-		return returnType;
-	}
-
 	public static And builder(@NonNull RuleExpression main) {
 		notNull(main, "main should not be null");
         return new Builder(main);
     }
 
-	public static class Builder implements And, Or {
+	public static class Builder implements And, Or, ReturnExpressionStr, Build {
 
 		private RuleExpression main;
 		private List<RuleExpression> ors = new ArrayList<>();
 		private List<RuleExpression> ands = new ArrayList<>();
-
-		private ReturnType returnType;
+		
+		private ReturnExpression returnExpression;
 
 		public Builder(RuleExpression main) {
 			notNull(main, "main should not be null");
 			this.main = main;
-
-			if (main.getReturnType() != null && this.returnType == null) {
-				this.returnType = main.getReturnType();
-			}
 		}
 
 		@Override
 		public And and(RuleExpression andExpression) {
 			this.ands.add(andExpression);
-
-			if (andExpression.getReturnType() != null && this.returnType == null) {
-				this.returnType = andExpression.getReturnType();
-			}
 			return this;
 		}
 
 		@Override
 		public Or or(RuleExpression orExpression) {
 			this.ors.add(orExpression);
-			if (orExpression.getReturnType() != null && this.returnType == null) {
-				this.returnType = orExpression.getReturnType();
-			}
+			return this;
+		}
+
+		@Override
+		public Build returnExpression(ReturnExpression returnExpression) {
+			this.returnExpression = returnExpression;
 			return this;
 		}
 
 		@Override
 		public Expressions build() {
-			return new Expressions(main, ors, ands, returnType);
+			return new Expressions(main, ors, ands, returnExpression);
 		}		
 	}
 
 	public interface And {
 		And and(RuleExpression andExpression);
 		Or or(RuleExpression orExpression);
+		Build returnExpression(ReturnExpression returnExpression);
 		Expressions build();
 	}
 
 	public interface Or {
 		Or or(RuleExpression orExpression);
+		Build returnExpression(ReturnExpression returnExpression);
 		Expressions build();
 	}
 
+	public interface ReturnExpressionStr {
+		Build returnExpression(ReturnExpression returnExpression);
+	}
+
+	public interface Build {
+		Expressions build();
+    }
+
 	@Override
 	public String toString() {
-		return "Expressions [main=" + main + ", ors=" + ors + ", ands=" + ands + ", returnType=" + returnType + "]";
+		return "Expressions [main=" + main + ", ors=" + ors + ", ands=" + ands + ", returnExpression=" + returnExpression + "]";
 	}
 }

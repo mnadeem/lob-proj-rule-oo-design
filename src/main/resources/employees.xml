@@ -43,7 +43,6 @@
             <id>105</id>
             <name>DEVOPS</name>
         </department>
-        <contractor>FALSE</contractor>
     </employee>
     <employee id="6">
         <firstName>Virat</firstName>
