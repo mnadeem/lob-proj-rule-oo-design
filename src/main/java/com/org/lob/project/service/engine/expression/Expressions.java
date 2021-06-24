@@ -45,7 +45,7 @@ public class Expressions {
 					.append(SEPERATOR_SPACE)
 					.append(PARAN_START);
 
-			builder.append(ands.stream().map(and -> and.getSubExpression()).collect(Collectors.joining(" and ")));
+			builder.append(getAnds().stream().map(and -> and.getSubExpression()).collect(Collectors.joining(" and ")));
 
 			builder.append(PARAN_END);
 		}
@@ -56,7 +56,7 @@ public class Expressions {
 					.append(SEPERATOR_SPACE)
 					.append(PARAN_START);
 
-			builder.append(ors.stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
+			builder.append(getOrs().stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
 
 			builder.append(PARAN_END);
 		}
@@ -73,51 +73,31 @@ public class Expressions {
 		return null;
 	}
 
-	public String getMainPath() {
-		return this.main.getPath();
+	private String getMainPath() {
+		return this.getMain().getPath();
 	}
 
-	public boolean isOnlyMain() {
-		return main != null && CollectionUtils.isEmpty(ors) && CollectionUtils.isEmpty(ands);
-	}
-
-	public boolean isOrsPresent() {
+	private boolean isOrsPresent() {
 		return !CollectionUtils.isEmpty(ors);
 	}
 
-	public boolean isAndsPresent() {
+	private boolean isAndsPresent() {
 		return !CollectionUtils.isEmpty(ands);
 	}
 
-	public boolean isBothPresent() {
-		return isOrsPresent() && isAndsPresent();
-	}
-
-	public boolean isXmlValueReturnType() {
+	private boolean isXmlValueReturnType() {
 		return returnExpression != null && ReturnType.XML_VAL == returnExpression.getReturnType();
 	}
 
-	public boolean isTrueReturnType() {
-		return returnExpression != null && ReturnType.TRUE == returnExpression.getReturnType();
-	}
-
-	public boolean isFalseReturnType() {
-		return returnExpression != null && ReturnType.FALSE == returnExpression.getReturnType();
-	}
-
-	public boolean isBoolReturnType() {
-		return isTrueReturnType() || isFalseReturnType();
-	}
-
-	public RuleExpression getMain() {
+	private RuleExpression getMain() {
 		return main;
 	}
 
-	public List<RuleExpression> getOrs() {
+	private List<RuleExpression> getOrs() {
 		return ors;
 	}
 
-	public List<RuleExpression> getAnds() {
+	private List<RuleExpression> getAnds() {
 		return ands;
 	}
 

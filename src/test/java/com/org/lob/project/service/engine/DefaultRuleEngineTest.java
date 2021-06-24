@@ -34,7 +34,6 @@ class DefaultRuleEngineTest {
 		targetBeingTested = new DefaultRuleEngine(asString(new FileSystemResource("./src/main/resources/employees.xml")));
 	}
 	
-	
 	@Test
 	void andExpressions() throws Exception {
 
