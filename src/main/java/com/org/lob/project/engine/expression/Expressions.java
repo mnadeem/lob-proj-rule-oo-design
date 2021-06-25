@@ -3,6 +3,7 @@ package com.org.lob.project.engine.expression;
 import static com.org.lob.support.Constants.BRACKET_END;
 import static com.org.lob.support.Constants.BRACKET_START;
 import static com.org.lob.support.Constants.CONJUNCTION_AND;
+import static com.org.lob.support.Constants.CONJUNCTION_OR;
 import static com.org.lob.support.Constants.PARENTHESES_END;
 import static com.org.lob.support.Constants.PARENTHESES_START;
 import static com.org.lob.support.Constants.SEPERATOR_SPACE;
@@ -33,11 +34,39 @@ public class Expressions {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(getMainPath())
-			    .append(BRACKET_START)
-			    .append(PARENTHESES_START);
+			    .append(BRACKET_START);
 
-		builder.append(main.getSubExpression()).append(PARENTHESES_END);
+		addMainExpression(builder);
 
+		addAndExpressions(builder);
+
+		addOrsExpressions(builder);
+
+		builder.append(BRACKET_END);
+
+		return builder.toString();
+	}
+
+	private void addMainExpression(StringBuilder builder) {
+		builder.append(PARENTHESES_START)
+				.append(main.getSubExpression())
+				.append(PARENTHESES_END);
+	}
+
+	private void addOrsExpressions(StringBuilder builder) {
+		if (isOrsPresent()) {
+			builder.append(SEPERATOR_SPACE)
+					.append(CONJUNCTION_AND)
+					.append(SEPERATOR_SPACE)
+					.append(PARENTHESES_START);
+
+			builder.append(getOrs().stream().map(or -> or.getSubExpression()).collect(Collectors.joining(SEPERATOR_SPACE + CONJUNCTION_OR + SEPERATOR_SPACE )));
+
+			builder.append(PARENTHESES_END);
+		}
+	}
+
+	private void addAndExpressions(StringBuilder builder) {
 		if (isAndsPresent()) {
 			builder.append(SEPERATOR_SPACE)
 					.append(CONJUNCTION_AND)
@@ -48,21 +77,6 @@ public class Expressions {
 
 			builder.append(PARENTHESES_END);
 		}
-
-		if (isOrsPresent()) {
-			builder.append(SEPERATOR_SPACE)
-					.append(CONJUNCTION_AND)
-					.append(SEPERATOR_SPACE)
-					.append(PARENTHESES_START);
-
-			builder.append(getOrs().stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
-
-			builder.append(PARENTHESES_END);
-		}
-
-		builder.append(BRACKET_END);
-
-		return builder.toString();
 	}
 
 	public String buildReturnExpression() {
