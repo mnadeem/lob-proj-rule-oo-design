@@ -82,16 +82,25 @@ public class DefaultRuleEngine {
 		String expression = expressions.buildEvaluationExpression();
 
 		NodeList nodes = nodes(expression);
+
+		return extractResult(expressions, nodes);
+	}
+
+	private String extractResult(Expressions expressions, NodeList nodes) throws Exception {
 		String result = null;
 
-		if (nodes.getLength() > 0 && expressions.isXmlValueReturnType()) {			
-			Node node = nodes.item(0);
-			String val = string(expressions.buildReturnExpression(), node);
-			if (StringUtils.hasText(val)) {
-				result = val;
+		if (nodes.getLength() > 0) {
+
+			if (expressions.isXmlValueReturnType()) {
+				Node node = nodes.item(0);
+				String val = string(expressions.buildReturnExpression(), node);
+				if (StringUtils.hasText(val)) {
+					result = val;
+				}
+			} else {
+				result = String.valueOf(Boolean.TRUE);
 			}
 		}
-
 		return result;
 	}
 }
