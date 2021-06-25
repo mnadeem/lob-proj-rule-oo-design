@@ -80,7 +80,7 @@ class DefaultRuleEngineTest {
 								//.subPath(null)
 								.tag("firstName")
 								.operator(Operator.EQUAL)
-								.value("Lokesh")
+								.value("Nadeem")
 								.build()
 							)
 						.or(RuleExpression
@@ -123,7 +123,7 @@ class DefaultRuleEngineTest {
 								//.subPath(null)
 								.tag("firstName")
 								.operator(Operator.EQUAL)
-								.value("Lokesh")
+								.value("Nadeem")
 								.build()
 							)
 						.and(RuleExpression
@@ -131,7 +131,7 @@ class DefaultRuleEngineTest {
 								//.subPath(null)
 								.tag("lastName")
 								.operator(Operator.EQUAL)
-								.value("Gupta")
+								.value("Mohammad")
 								.build()
 							)
 						.and(RuleExpression
@@ -228,7 +228,7 @@ class DefaultRuleEngineTest {
 						//.subPath(null)
 						.tag("firstName")
 						.operator("Equal")
-						.value("Lokesh1")
+						.value("Nadeem1")
 						.build())
 					.build()
 				.buildEvaluationExpression();
@@ -246,7 +246,7 @@ class DefaultRuleEngineTest {
 						//.subPath(null)
 						.tag("firstName")
 						.operator("Equal")
-						.value("Lokesh")
+						.value("Nadeem")
 						.build())
 					.build()
 				.buildEvaluationExpression();
@@ -257,7 +257,7 @@ class DefaultRuleEngineTest {
 		assertEquals(1, nodes.getLength());
 
 		String firstName = targetBeingTested.string("./firstName", nodes.item(0));
-		assertEquals("Lokesh", firstName);		
+		assertEquals("Nadeem", firstName);		
 	}
 
 	@Test
@@ -295,7 +295,7 @@ class DefaultRuleEngineTest {
 						//.subPath(null)
 						.tag("firstName")
 						.operator("List")
-						.value("Lokesh|Brian")
+						.value("Nadeem|Brian")
 						.build())
 					.build()
 				.buildEvaluationExpression();
@@ -306,7 +306,7 @@ class DefaultRuleEngineTest {
 		assertEquals(2, nodes.getLength());
 
 		String firstName = targetBeingTested.string("./firstName", nodes.item(0));
-		assertEquals("Lokesh", firstName);		
+		assertEquals("Nadeem", firstName);		
 	}
 
 	@Test
@@ -326,7 +326,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void exampleTwo() throws Exception {
 		//Get all matches
-		NodeList nodes = targetBeingTested.nodes("/employees/employee[not(boolean(firstName='Lokesh'))]/department[name='IT' and id='101']");
+		NodeList nodes = targetBeingTested.nodes("/employees/employee[not(boolean(firstName='Nadeem'))]/department[name='IT' and id='101']");
 
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
