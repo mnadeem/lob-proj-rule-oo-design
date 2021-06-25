@@ -1,4 +1,4 @@
-package com.org.lob.project.service.engine.expression;
+package com.org.lob.project.engine.expression;
 
 public enum ReturnType {
 	TRUE("TRUE"), FALSE("FALSE"), XML_VAL("XML value");

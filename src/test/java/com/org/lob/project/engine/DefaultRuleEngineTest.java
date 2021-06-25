@@ -1,7 +1,9 @@
-package com.org.lob.project.service.engine;
+package com.org.lob.project.engine;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
@@ -19,9 +21,9 @@ import org.springframework.util.FileCopyUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.org.lob.project.service.engine.expression.Expressions;
-import com.org.lob.project.service.engine.expression.Operator;
-import com.org.lob.project.service.engine.expression.RuleExpression;
+import com.org.lob.project.engine.expression.Expressions;
+import com.org.lob.project.engine.expression.Operator;
+import com.org.lob.project.engine.expression.RuleExpression;
 
 class DefaultRuleEngineTest {
 

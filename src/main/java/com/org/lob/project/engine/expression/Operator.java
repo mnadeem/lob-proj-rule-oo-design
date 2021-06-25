@@ -1,4 +1,4 @@
-package com.org.lob.project.service.engine.expression;
+package com.org.lob.project.engine.expression;
 
 public enum Operator {
 	EQUAL("Equal"), NOT_EQUAL("Not Equal"), LIST("List"), NULL("Is Null"), NOT_NULL("Is Not Null");

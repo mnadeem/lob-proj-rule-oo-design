@@ -1,4 +1,4 @@
-package com.org.lob.project.service.engine;
+package com.org.lob.project.engine;
 
 import java.io.StringReader;
 
@@ -15,7 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.org.lob.project.service.engine.expression.Expressions;
+import com.org.lob.project.engine.expression.Expressions;
 // https://docs.oracle.com/javase/tutorial/jaxp/xslt/xpath.html
 // https://howtodoinjava.com/java/xml/java-xpath-expression-examples/
 // http://learningprogramming.net/java/xpath/use-or-condition-in-xpath-in-java-xml/
