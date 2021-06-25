@@ -14,8 +14,8 @@ public class ReturnExpression {
 		this.returnType = returnType;
 	}
 
-	public String getExpression(String mainPath) {
-		StringBuilder builder = new StringBuilder(mainPath);
+	public String getExpression() {
+		StringBuilder builder = new StringBuilder();
 
 		if (StringUtils.hasText(subPath)) {
 			builder.append(subPath);

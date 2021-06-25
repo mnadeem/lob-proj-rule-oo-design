@@ -67,7 +67,7 @@ public class Expressions {
 
 	public String buildReturnExpression() {
 		if (isXmlValueReturnType()) {
-			return returnExpression.getExpression(getMainPath());
+			return returnExpression.getExpression();
 		}
 		return null;
 	}

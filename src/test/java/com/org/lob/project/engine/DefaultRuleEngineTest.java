@@ -25,6 +25,7 @@ import org.w3c.dom.NodeList;
 
 import com.org.lob.project.engine.expression.Expressions;
 import com.org.lob.project.engine.expression.Operator;
+import com.org.lob.project.engine.expression.ReturnExpression;
 import com.org.lob.project.engine.expression.RuleExpression;
 
 class DefaultRuleEngineTest {
@@ -77,6 +78,44 @@ class DefaultRuleEngineTest {
 					.build();
 	}
 
+	@Test
+	void returnExpressionsEngineTest() throws Exception {
+
+		Expressions exp = returnExpression();
+
+		String result = targetBeingTested.evaluate(exp);
+		assertEquals("IT", result);
+		assertFalse(Boolean.valueOf(result));
+	}
+
+	private Expressions returnExpression() {
+		return Expressions
+						.builder(RuleExpression
+								.builder()
+								.path("/employees/employee")
+								//.subPath(null)
+								.tag("firstName")
+								.operator(Operator.EQUAL)
+								.value("Nadeem")
+								.build()
+							)
+						.and(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("101")
+								.build()
+							)
+						.returnExpression(ReturnExpression
+								.builder()
+								.subPath(null)
+								.tag("department/name")
+								.returnType("XML value")
+								.build())
+					.build();
+	}
+	
 	@Test
 	void andExpressions() throws Exception {
 
@@ -237,7 +276,7 @@ class DefaultRuleEngineTest {
 		String id = targetBeingTested.string("./@id", node);
 		assertEquals("5", id);
 	}
-	
+
 	@Test
 	void mainExpressionIsNotNull() throws Exception {
 
