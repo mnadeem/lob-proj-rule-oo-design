@@ -1,5 +1,11 @@
 package com.org.lob.project.engine.expression;
 
+import static com.org.lob.support.Constants.BRACKET_END;
+import static com.org.lob.support.Constants.BRACKET_START;
+import static com.org.lob.support.Constants.CONJUNCTION_AND;
+import static com.org.lob.support.Constants.PARENTHESES_END;
+import static com.org.lob.support.Constants.PARENTHESES_START;
+import static com.org.lob.support.Constants.SEPERATOR_SPACE;
 import static org.springframework.util.Assert.notNull;
 
 import java.util.ArrayList;
@@ -10,14 +16,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
 public class Expressions {
-
-	private static final String CONJUCTION_AND = "and";
-
-	private static final char PARAN_END = ')';
-	private static final char PARAN_START = '(';
-	private static final char SEPERATOR_SPACE = ' ';
-	private static final char BRACKET_END = ']';
-	private static final char BRACKET_START = '[';
 
 	private final RuleExpression main;
 	private final List<RuleExpression> ands;
@@ -35,30 +33,31 @@ public class Expressions {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append(getMainPath())
-			    .append(BRACKET_START);
+			    .append(BRACKET_START)
+			    .append(PARENTHESES_START);
 
-		builder.append(main.getSubExpression());
+		builder.append(main.getSubExpression()).append(PARENTHESES_END);
 
 		if (isAndsPresent()) {
 			builder.append(SEPERATOR_SPACE)
-					.append(CONJUCTION_AND)
+					.append(CONJUNCTION_AND)
 					.append(SEPERATOR_SPACE)
-					.append(PARAN_START);
+					.append(PARENTHESES_START);
 
-			builder.append(getAnds().stream().map(and -> and.getSubExpression()).collect(Collectors.joining(" and ")));
+			builder.append(getAnds().stream().map(and -> and.getSubExpression()).collect(Collectors.joining(SEPERATOR_SPACE + CONJUNCTION_AND + SEPERATOR_SPACE)));
 
-			builder.append(PARAN_END);
+			builder.append(PARENTHESES_END);
 		}
 
 		if (isOrsPresent()) {
 			builder.append(SEPERATOR_SPACE)
-					.append(CONJUCTION_AND)
+					.append(CONJUNCTION_AND)
 					.append(SEPERATOR_SPACE)
-					.append(PARAN_START);
+					.append(PARENTHESES_START);
 
 			builder.append(getOrs().stream().map(or -> or.getSubExpression()).collect(Collectors.joining(" or ")));
 
-			builder.append(PARAN_END);
+			builder.append(PARENTHESES_END);
 		}
 
 		builder.append(BRACKET_END);
@@ -86,7 +85,7 @@ public class Expressions {
 	}
 
 	private boolean isXmlValueReturnType() {
-		return returnExpression != null && ReturnType.XML_VAL == returnExpression.getReturnType();
+		return returnExpression != null && returnExpression.isXmlValueReturnType();
 	}
 
 	private RuleExpression getMain() {

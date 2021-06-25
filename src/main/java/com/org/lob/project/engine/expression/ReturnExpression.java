@@ -25,6 +25,10 @@ public class ReturnExpression {
 		return builder.toString();
 	}
 
+	public boolean isXmlValueReturnType() {
+		return ReturnType.XML_VAL == returnType;
+	} 
+
 	public static SubPath builder() {
         return new Builder();
     }
@@ -61,19 +65,6 @@ public class ReturnExpression {
 		}
 
 	}
-
-	public String getSubPath() {
-		return subPath;
-	}
-
-	public String getTag() {
-		return tag;
-	}
-
-	public ReturnType getReturnType() {
-		return returnType;
-	}
-	
 	
 	public interface SubPath {
 		Tag subPath(String subPath);

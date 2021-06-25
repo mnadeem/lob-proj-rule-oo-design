@@ -1,19 +1,21 @@
 package com.org.lob.project.engine.expression;
 
+import static com.org.lob.support.Constants.CONJUNCTION_NOT;
+import static com.org.lob.support.Constants.CONJUNCTION_OR;
+import static com.org.lob.support.Constants.EQUAL;
+import static com.org.lob.support.Constants.PARENTHESES_END;
+import static com.org.lob.support.Constants.PARENTHESES_START;
+import static com.org.lob.support.Constants.QUOTE_END;
+import static com.org.lob.support.Constants.QUOTE_START;
+import static com.org.lob.support.Constants.SEPERATOR_PIPE;
+import static com.org.lob.support.Constants.SEPERATOR_SPACE;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.springframework.util.StringUtils;
 
 public class RuleExpression {
-
-	private static final char PARENTHESES_END = ')';
-	private static final char PARENTHESES_START = '(';
-	private static final char EQUAL = '=';
-
-	private static final String QUOTE_START = "'";
-	private static final String QUOTE_END = QUOTE_START;
-	private static final String SEPERATOR_PIPE = "|";
 
 	private final String path;
 	private final String subPath;
@@ -57,7 +59,7 @@ public class RuleExpression {
 
 	private void appendElementDoesNotExists(StringBuilder builder) {
 
-		builder.append("not")
+		builder.append(CONJUNCTION_NOT)
 				.append(PARENTHESES_START)
 				.append(tag)
 				.append(PARENTHESES_END);
@@ -70,12 +72,12 @@ public class RuleExpression {
 	private void appendListExpression(StringBuilder builder) {
 
 		String[] tokenized = StringUtils.tokenizeToStringArray(value, SEPERATOR_PIPE);
-		String result = Stream.of(tokenized).map(x -> tag + EQUAL + QUOTE_START + x + QUOTE_END).collect(Collectors.joining(" or "));
+		String result = Stream.of(tokenized).map(x -> tag + EQUAL + QUOTE_START + x + QUOTE_END).collect(Collectors.joining(SEPERATOR_SPACE + CONJUNCTION_OR + SEPERATOR_SPACE));
 		builder.append(result);
 	}
 
 	private void appendNotEqualsExpression(StringBuilder builder) {
-		builder.append("not")
+		builder.append(CONJUNCTION_NOT)
 				.append(PARENTHESES_START)
 				.append(tag)
 				.append(EQUAL)
@@ -95,22 +97,6 @@ public class RuleExpression {
 
 	public String getPath() {
 		return path;
-	}
-
-	public String getSubPath() {
-		return subPath;
-	}
-
-	public String getTag() {
-		return tag;
-	}
-
-	public Operator getOperator() {
-		return operator;
-	}
-
-	public String getValue() {
-		return value;
 	}
 
 	public static Path builder() {

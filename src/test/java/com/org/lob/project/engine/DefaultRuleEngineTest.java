@@ -99,6 +99,13 @@ class DefaultRuleEngineTest {
 								.value("102")
 								.build()
 							)
+						.or(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operatorBuild("Is Not Null")
+								.build()
+							)
 					.build()
 				.buildEvaluationExpression();
 		
