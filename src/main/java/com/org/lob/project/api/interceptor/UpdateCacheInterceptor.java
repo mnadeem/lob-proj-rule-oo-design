@@ -1,4 +1,4 @@
-package com.org.lob.api.interceptor;
+package com.org.lob.project.api.interceptor;
 
 import static com.org.lob.support.Constants.REQUEST_PARAM_PROJECT;
 

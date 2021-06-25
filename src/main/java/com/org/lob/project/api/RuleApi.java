@@ -1,4 +1,4 @@
-package com.org.lob.api;
+package com.org.lob.project.api;
 
 import static com.org.lob.support.Constants.REQUEST_MAPPING_RULE;
 import static com.org.lob.support.Constants.REQUEST_PARAM_IDS;

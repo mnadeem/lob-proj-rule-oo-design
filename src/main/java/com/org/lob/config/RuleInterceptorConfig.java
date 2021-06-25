@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.org.lob.api.interceptor.UpdateCacheInterceptor;
+import com.org.lob.project.api.interceptor.UpdateCacheInterceptor;
 
 @Configuration
 public class RuleInterceptorConfig implements WebMvcConfigurer {
