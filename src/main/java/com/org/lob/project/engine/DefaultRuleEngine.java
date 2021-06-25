@@ -79,12 +79,16 @@ public class DefaultRuleEngine implements RuleEngine {
 	}
 
 	@Override
-	public String evaluate(Expressions expressions) throws Exception {
+	public String evaluate(Expressions expressions) {
 		String expression = expressions.buildEvaluationExpression();
 
-		NodeList nodes = nodes(expression);
+		try {
+			NodeList nodes = nodes(expression);
 
-		return extractResult(expressions, nodes);
+			return extractResult(expressions, nodes);
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
 	private String extractResult(Expressions expressions, NodeList nodes) throws Exception {

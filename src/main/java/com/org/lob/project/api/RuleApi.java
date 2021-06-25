@@ -28,7 +28,6 @@ public class RuleApi {
 	// GET : /?ids=1&ids=2&ids=3
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getByIds(@RequestParam(name = REQUEST_PARAM_PROJECT, required = true) String project, @RequestParam(name = REQUEST_PARAM_IDS, required = true) List<Long> ids) {
-
-		return ResponseEntity.ok(ids);
+		return ResponseEntity.ok(ruleService.execute(project, ids));
 	}
 }
