@@ -2,9 +2,11 @@ package com.org.lob.project.engine;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -37,9 +39,60 @@ class DefaultRuleEngineTest {
 	}
 
 	@Test
+	void andExpressionsEngineTest() throws Exception {
+
+		Expressions exp = andExpression();
+
+		String result = targetBeingTested.evaluate(exp);
+		assertTrue(Boolean.valueOf(result));
+	}
+
+	@Test
+	void andExpressionsEngineFalseTest() throws Exception {
+
+		Expressions exp = andExpressionFalse();
+
+		String result = targetBeingTested.evaluate(exp);
+		assertFalse(Boolean.valueOf(result));
+	}
+	
+	private Expressions andExpressionFalse() {
+		return Expressions
+						.builder(RuleExpression
+								.builder()
+								.path("/employees/employee")
+								//.subPath(null)
+								.tag("firstName")
+								.operatorBuild("Is Not Null")
+								.build()
+							)
+						.and(RuleExpression
+								.subPathBuilder()
+								//.subPath(null)
+								.tag("department/id")
+								.operator(Operator.EQUAL)
+								.value("10100")
+								.build()
+							)
+					.build();
+	}
+
+	@Test
 	void andExpressions() throws Exception {
 
-		String exp = Expressions
+		String exp = andExpression().buildEvaluationExpression();
+
+		NodeList nodes = targetBeingTested.nodes(exp);
+		
+		assertEquals(1, nodes.getLength());
+		Node node = nodes.item(0);
+
+		String id = targetBeingTested.string("./@id", node);
+		assertEquals("1", id);
+	}
+
+	private Expressions andExpression() {
+		return Expressions
 						.builder(RuleExpression
 								.builder()
 								.path("/employees/employee")
@@ -56,16 +109,7 @@ class DefaultRuleEngineTest {
 								.value("101")
 								.build()
 							)
-					.build()
-				.buildEvaluationExpression();
-
-		NodeList nodes = targetBeingTested.nodes(exp);
-		
-		assertEquals(1, nodes.getLength());
-		Node node = nodes.item(0);
-
-		String id = targetBeingTested.string("./@id", node);
-		assertEquals("1", id);
+					.build();
 	}
 	
 	@Test
