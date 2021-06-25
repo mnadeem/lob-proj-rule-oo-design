@@ -35,7 +35,7 @@ class DefaultRuleEngineTest {
 	public static void doBeforeAll() {
 		targetBeingTested = new DefaultRuleEngine(asString(new FileSystemResource("./src/main/resources/employees.xml")));
 	}
-	
+
 	@Test
 	void andExpressions() throws Exception {
 
@@ -58,8 +58,6 @@ class DefaultRuleEngineTest {
 							)
 					.build()
 				.buildEvaluationExpression();
-		
-		LOGGER.info(" Exp : {} ", exp);
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 		
@@ -108,8 +106,6 @@ class DefaultRuleEngineTest {
 							)
 					.build()
 				.buildEvaluationExpression();
-		
-		LOGGER.info(" Exp : {} ", exp);
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 
@@ -167,8 +163,6 @@ class DefaultRuleEngineTest {
 							)
 					.build()
 				.buildEvaluationExpression();
-		
-		LOGGER.info(" Exp : {} ", exp);
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 
@@ -191,8 +185,6 @@ class DefaultRuleEngineTest {
 					.build()
 				.buildEvaluationExpression();
 		
-		LOGGER.info(" Exp : {} ", exp);
-		
 		NodeList nodes = targetBeingTested.nodes(exp);
 		
 		assertEquals(1, nodes.getLength());
@@ -213,9 +205,7 @@ class DefaultRuleEngineTest {
 						.build())
 					.build()
 				.buildEvaluationExpression();
-		
-		LOGGER.info(" Exp : {} ", exp);
-		
+	
 		NodeList nodes = targetBeingTested.nodes(exp);
 
 		assertEquals(9, nodes.getLength());
@@ -241,7 +231,6 @@ class DefaultRuleEngineTest {
 				.buildEvaluationExpression();
 
 		Node node = targetBeingTested.node(exp);
-		LOGGER.info(" Exp : {} , result : {}", exp, node);
 		assertNull(node);
 	}
 
@@ -257,8 +246,6 @@ class DefaultRuleEngineTest {
 						.build())
 					.build()
 				.buildEvaluationExpression();
-		
-		LOGGER.info(" Exp : {} ", exp);
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 		assertEquals(1, nodes.getLength());
@@ -282,7 +269,6 @@ class DefaultRuleEngineTest {
 
 		NodeList nodes = targetBeingTested.nodes(exp);
 
-		LOGGER.info(" Exp : {}, Count employee: {}", exp, nodes.getLength());
 		for (int i = 0; i < nodes.getLength(); i++) {
 			Node node = nodes.item(i);
 
@@ -307,8 +293,6 @@ class DefaultRuleEngineTest {
 					.build()
 				.buildEvaluationExpression();
 
-		LOGGER.info(" Exp : {}", exp);
-
 		NodeList nodes = targetBeingTested.nodes(exp);
 		assertEquals(2, nodes.getLength());
 
@@ -325,7 +309,7 @@ class DefaultRuleEngineTest {
 			Node node = nodes.item(i);
 
 			String id = targetBeingTested.string("./department[name='IT' or  name='HR']/id/text()", node);
-			LOGGER.info(" id : {}", id);
+
 			assertNotNull(id);
 		}
 	}

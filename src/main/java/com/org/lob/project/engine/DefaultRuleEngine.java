@@ -10,6 +10,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -48,31 +49,49 @@ public class DefaultRuleEngine {
 	}
 
 	public NodeList nodes(String expression) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return (NodeList) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODESET);
 	}
 
 	public String string(String expression) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return (String) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.STRING);
 	}
 
 	public String string(String expression, Node node) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return xPath.compile(expression).evaluate(node);
 	}
 
 	public Boolean bool(String expression) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return (Boolean) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.BOOLEAN);
 	}
 
 	public Integer number(String expression) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return (Integer) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NUMBER);
 	}
 
 	public Node node(String expression) throws Exception {
+		LOGGER.debug("Evaluating expression : {}", expression);
 		return (Node) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODE);
 	}
 
-	public String evaluate(Expressions expressions) {
+	public String evaluate(Expressions expressions) throws Exception {
+		String expression = expressions.buildEvaluationExpression();
 
-		return null;
+		NodeList nodes = nodes(expression);
+		String result = null;
+
+		if (nodes.getLength() > 0 && expressions.isXmlValueReturnType()) {			
+			Node node = nodes.item(0);
+			String val = string(expressions.buildReturnExpression(), node);
+			if (StringUtils.hasText(val)) {
+				result = val;
+			}
+		}
+
+		return result;
 	}
 }

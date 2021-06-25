@@ -84,7 +84,7 @@ public class Expressions {
 		return !CollectionUtils.isEmpty(ands);
 	}
 
-	private boolean isXmlValueReturnType() {
+	public boolean isXmlValueReturnType() {
 		return returnExpression != null && returnExpression.isXmlValueReturnType();
 	}
 
