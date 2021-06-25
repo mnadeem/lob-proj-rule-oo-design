@@ -24,7 +24,7 @@ import com.org.lob.project.engine.expression.Expressions;
 // https://docs.microsoft.com/en-us/previous-versions/dotnet/netframework-4.0/ms256086(v=vs.100)?redirectedfrom=MSDN
 // https://stackoverflow.com/questions/3418470/using-not-in-xpath/3418510
 // https://stackoverflow.com/questions/15909348/how-to-tell-using-xpath-if-an-element-is-present-and-non-empty
-public class DefaultRuleEngine {
+public class DefaultRuleEngine implements RuleEngine {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRuleEngine.class);
 
@@ -78,6 +78,7 @@ public class DefaultRuleEngine {
 		return (Node) xPath.compile(expression).evaluate(xmlDocument, XPathConstants.NODE);
 	}
 
+	@Override
 	public String evaluate(Expressions expressions) throws Exception {
 		String expression = expressions.buildEvaluationExpression();
 
