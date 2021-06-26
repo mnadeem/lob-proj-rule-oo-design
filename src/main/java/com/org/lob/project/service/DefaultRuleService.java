@@ -10,15 +10,17 @@ import com.org.lob.project.engine.RuleEngine;
 import com.org.lob.project.engine.RuleEngineResult;
 import com.org.lob.project.engine.expression.Expressions;
 import com.org.lob.project.engine.expression.Operator;
+import com.org.lob.project.engine.expression.ReturnExpression;
 import com.org.lob.project.engine.expression.RuleExpression;
 import com.org.lob.project.repository.FileRepository;
+import com.org.lob.project.repository.SimpleFileRepository;
 
 @Service
 public class DefaultRuleService implements RuleService {
 
 	private final FileRepository fileRepository;
 
-	public DefaultRuleService(FileRepository fileRepository) {
+	public DefaultRuleService(SimpleFileRepository fileRepository) {
 		this.fileRepository = fileRepository;
 	}
 
@@ -55,12 +57,13 @@ public class DefaultRuleService implements RuleService {
 	private Expressions buildExpression(Long ruleId) {
 		// Load rule from DB
 		return Expressions
-				.builder(ruleId, RuleExpression
+				.builder(1L, RuleExpression
 						.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("firstName")
-						.operatorBuild("Is Not Null")
+						.operator(Operator.EQUAL)
+						.value("Nadeem")
 						.build()
 					)
 				.and(RuleExpression
@@ -68,9 +71,15 @@ public class DefaultRuleService implements RuleService {
 						//.subPath(null)
 						.tag("department/id")
 						.operator(Operator.EQUAL)
-						.value("10100")
+						.value("101")
 						.build()
 					)
+				.returnExpression(ReturnExpression
+						.builder()
+						.subPath(null)
+						.tag("department/name")
+						.returnType("XML value")
+						.build())
 			.build();
 	}
 

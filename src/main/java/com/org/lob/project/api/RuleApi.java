@@ -19,13 +19,13 @@ import com.org.lob.project.service.RuleService;
 @RequestMapping(REQUEST_MAPPING_RULE)
 public class RuleApi {
 
-	private RuleService ruleService;
+	private final RuleService ruleService;
 
 	public RuleApi(RuleService ruleService) {
 		this.ruleService = ruleService;
 	}
 
-	// GET : /?ids=1&ids=2&ids=3
+	// GET : ?ids=1&ids=2&ids=3&project=./src/main/resources/employees.xml
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> getByIds(@RequestParam(name = REQUEST_PARAM_PROJECT, required = true) String project, @RequestParam(name = REQUEST_PARAM_IDS, required = true) List<Long> ids) {
 		return ResponseEntity.ok(ruleService.execute(project, ids));
