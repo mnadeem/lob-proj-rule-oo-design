@@ -44,8 +44,8 @@ class DefaultRuleEngineTest {
 
 		Expressions exp = andExpression();
 
-		String result = targetBeingTested.evaluate(exp);
-		assertTrue(Boolean.valueOf(result));
+		RuleEngineResult result = targetBeingTested.evaluate(exp);
+		assertTrue(Boolean.valueOf(result.getResult()));
 	}
 
 	@Test
@@ -53,13 +53,13 @@ class DefaultRuleEngineTest {
 
 		Expressions exp = andExpressionFalse();
 
-		String result = targetBeingTested.evaluate(exp);
-		assertFalse(Boolean.valueOf(result));
+		RuleEngineResult result = targetBeingTested.evaluate(exp);
+		assertFalse(Boolean.valueOf(result.getResult()));
 	}
-	
+
 	private Expressions andExpressionFalse() {
 		return Expressions
-						.builder(RuleExpression
+						.builder(1L, RuleExpression
 								.builder()
 								.path("/employees/employee")
 								//.subPath(null)
@@ -83,14 +83,14 @@ class DefaultRuleEngineTest {
 
 		Expressions exp = returnExpression();
 
-		String result = targetBeingTested.evaluate(exp);
+		RuleEngineResult result = targetBeingTested.evaluate(exp);
 		assertEquals("IT", result);
-		assertFalse(Boolean.valueOf(result));
+		assertFalse(Boolean.valueOf(result.getResult()));
 	}
 
 	private Expressions returnExpression() {
 		return Expressions
-						.builder(RuleExpression
+						.builder(1L, RuleExpression
 								.builder()
 								.path("/employees/employee")
 								//.subPath(null)
@@ -132,7 +132,7 @@ class DefaultRuleEngineTest {
 
 	private Expressions andExpression() {
 		return Expressions
-						.builder(RuleExpression
+						.builder(1L, RuleExpression
 								.builder()
 								.path("/employees/employee")
 								//.subPath(null)
@@ -155,7 +155,7 @@ class DefaultRuleEngineTest {
 	void orExpressions() throws Exception {
 
 		String exp = Expressions
-						.builder(RuleExpression
+						.builder(1L, RuleExpression
 								.builder()
 								.path("/employees/employee")
 								//.subPath(null)
@@ -203,7 +203,7 @@ class DefaultRuleEngineTest {
 	void andOrExpressions() throws Exception {
 
 		String exp = Expressions
-						.builder(RuleExpression
+						.builder(1L, RuleExpression
 								.builder()
 								.path("/employees/employee")
 								//.subPath(null)
@@ -259,7 +259,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionIsNull() throws Exception {
 
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("contractor")
@@ -280,7 +280,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionIsNotNull() throws Exception {
 
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("contractor")
@@ -303,7 +303,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionEqualsNull() throws Exception {
 
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("firstName")
@@ -320,7 +320,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionEqualsNonNull() throws Exception {
 		
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("firstName")
@@ -340,7 +340,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionNotEqualsNonNull() throws Exception {
 
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("firstName")
@@ -366,7 +366,7 @@ class DefaultRuleEngineTest {
 	@Test
 	void mainExpressionListNonNull() throws Exception {
 
-		String exp = Expressions.builder(RuleExpression.builder()
+		String exp = Expressions.builder(1L, RuleExpression.builder()
 						.path("/employees/employee")
 						//.subPath(null)
 						.tag("firstName")

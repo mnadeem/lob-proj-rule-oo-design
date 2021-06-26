@@ -26,8 +26,12 @@ public class ReturnExpression {
 	}
 
 	public boolean isXmlValueReturnType() {
-		return ReturnType.XML_VAL == returnType;
-	} 
+		return ReturnType.XML_VAL == getReturnType();
+	}
+
+	public ReturnType getReturnType() {
+		return returnType;
+	}
 
 	public static SubPath builder() {
         return new Builder();

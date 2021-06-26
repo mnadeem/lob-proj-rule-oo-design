@@ -1,6 +1,8 @@
 package com.org.lob.project.engine;
 
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -28,8 +30,8 @@ public class DefaultRuleEngine implements RuleEngine {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultRuleEngine.class);
 
-	private XPath xPath;
-	private Document xmlDocument;
+	private final XPath xPath;
+	private final Document xmlDocument;
 
 	public DefaultRuleEngine(String xml) {
 
@@ -79,13 +81,13 @@ public class DefaultRuleEngine implements RuleEngine {
 	}
 
 	@Override
-	public String evaluate(Expressions expressions) {
+	public RuleEngineResult evaluate(Expressions expressions) {
 		String expression = expressions.buildEvaluationExpression();
 
 		try {
 			NodeList nodes = nodes(expression);
 
-			return extractResult(expressions, nodes);
+			return new RuleEngineResult(expressions.getRuleId(), extractResult(expressions, nodes), expressions.getReturnType());
 		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
@@ -106,6 +108,15 @@ public class DefaultRuleEngine implements RuleEngine {
 				result = String.valueOf(Boolean.TRUE);
 			}
 		}
+		return result;
+	}
+
+	@Override
+	public List<RuleEngineResult> evaluate(List<Expressions> expressions) {
+		List<RuleEngineResult> result = new ArrayList<>();
+		for (Expressions exp : expressions) {
+			result.add(evaluate(exp));
+		}		
 		return result;
 	}
 }

@@ -2,11 +2,13 @@ package com.org.lob.project.service;
 
 import java.util.List;
 
-public interface RuleService {
+import com.org.lob.project.engine.RuleEngineResult;
 
-	String load(String project);
+public interface RuleService {
 	
+	String load(String project);
+
 	String reLoad(String project);
 	
-	List<String> execute(String project, List<Long> ids);
+	List<RuleEngineResult> execute(String project, List<Long> ids);
 }

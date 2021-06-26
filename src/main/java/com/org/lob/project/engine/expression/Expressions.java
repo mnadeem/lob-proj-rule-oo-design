@@ -13,17 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.lang.NonNull;
 import org.springframework.util.CollectionUtils;
 
 public class Expressions {
-
+	private final Long ruleId;
 	private final RuleExpression main;
 	private final List<RuleExpression> ands;
 	private final List<RuleExpression> ors;
 	private final ReturnExpression returnExpression;
 
-	private Expressions(RuleExpression main, List<RuleExpression> ors, List<RuleExpression> ands, ReturnExpression returnExpression) {
+	private Expressions(Long ruleId, RuleExpression main, List<RuleExpression> ors, List<RuleExpression> ands, ReturnExpression returnExpression) {
+		this.ruleId = ruleId;
 		this.main = main;
 		this.ors = ors;
 		this.ands = ands;
@@ -102,6 +102,10 @@ public class Expressions {
 		return returnExpression != null && returnExpression.isXmlValueReturnType();
 	}
 
+	public ReturnType getReturnType() {
+		return returnExpression != null ? returnExpression.getReturnType() : null;
+	}
+
 	private RuleExpression getMain() {
 		return main;
 	}
@@ -114,21 +118,26 @@ public class Expressions {
 		return ands;
 	}
 
-	public static And builder(@NonNull RuleExpression main) {
+	public Long getRuleId() {
+		return ruleId;
+	}
+
+	public static And builder(Long ruleId, RuleExpression main) {
 		notNull(main, "main should not be null");
-        return new Builder(main);
+        return new Builder(ruleId, main);
     }
 
 	public static class Builder implements And, Or, ReturnExpressionStr, Build {
-
+		private Long ruleId;
 		private RuleExpression main;
 		private List<RuleExpression> ors = new ArrayList<>();
 		private List<RuleExpression> ands = new ArrayList<>();
 		
 		private ReturnExpression returnExpression;
 
-		public Builder(RuleExpression main) {
+		public Builder(Long ruleId, RuleExpression main) {
 			notNull(main, "main should not be null");
+			this.ruleId = ruleId;
 			this.main = main;
 		}
 
@@ -156,7 +165,7 @@ public class Expressions {
 
 		@Override
 		public Expressions build() {
-			return new Expressions(main, ors, ands, returnExpression);
+			return new Expressions(ruleId, main, ors, ands, returnExpression);
 		}		
 	}
 
