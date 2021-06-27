@@ -1,5 +1,6 @@
 package com.org.lob.config;
 
+import org.springframework.amqp.core.AnonymousQueue;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
@@ -15,9 +16,6 @@ public class RabbitMqConfig {
 	@Value("${rabbitmq.rules_cache.exchange}")
 	private String rulesCacheExchange;
 
-	@Value("${rabbitmq.rules_cache_update.triggered.queue}")
-	private String rcuQueue;
-
 	@Bean (name = "rcuFx")
 	FanoutExchange fanoutExchange() {
 		return new FanoutExchange(rulesCacheExchange);
@@ -25,7 +23,7 @@ public class RabbitMqConfig {
 
 	@Bean(name = "rcuTriggered")
 	Queue flightReceivedQueue() {
-		return new Queue(rcuQueue, true);
+		return new AnonymousQueue();
 	}
 
 	@Bean
